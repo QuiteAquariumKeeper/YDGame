@@ -1,8 +1,8 @@
-## auto load, don't need class name
+## PlayerManager auto load, don't need class name
 extends Node
 
-# drag & dropped the player scene from filesystem. This is the reference to create an instance of the player
-# in different levels
+# drag & dropped the player scene from filesystem. This is the reference to create an instance of the
+# player in different levels
 const PLAYER = preload("res://Player/player.tscn")
 
 var player : Player
@@ -21,7 +21,7 @@ func add_player_instance() -> void:
 	player = PLAYER.instantiate() # create a new instance of player
 	
 	# add the player to the scene somewhere. Added as a child to the root scene (so on the same layer as the 
-	# playground (eg), so due to Y sort Enabled, the spawned player will be behind plants etc. So use 
+	# playground (eg)), so due to Y sort Enabled, the spawned player will be behind plants etc. So use 
 	# set_as_parent func
 	add_child( player )
 	pass

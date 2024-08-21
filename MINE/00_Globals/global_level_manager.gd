@@ -14,6 +14,13 @@ var position_offset : Vector2 # offset player's pos
 var current_tilemap_bounds : Array[ Vector2 ] # 2 vectors of the top left and bottom right coor
 
 
+# for loading the first level so level_transition script _ready() can run
+func _ready() -> void:
+	 # wait to get the first process frame ie. level transition & first level is loaded
+	await get_tree().process_frame
+	level_loaded.emit() # to be picked up in level_transition _ready()
+	
+
 func ChangeTilemapBounds( bounds : Array[ Vector2] ) -> void: # getting called in LevelTileMap
 	# 2 ways for getting bounds from this global script - directly refing var or connect to signal
 	current_tilemap_bounds = bounds
@@ -27,19 +34,20 @@ func load_new_level(
 		_position_offset : Vector2
 ) -> void:
 	
-	get_tree().paused = true # pause game
+	get_tree().paused = true # pause game, avoid transition level taking too long and getting chased by emnemy
 	target_transition = _target_transition
 	position_offset = _position_offset
 	
-	await get_tree().process_frame # Level Transition
+	# black screen anima, SceneTransition node set to 'always' for Process in Inspector so ignores pause
+	await SceneTransition.fade_out()
 	
 	level_load_started.emit()
 	
-	await get_tree().process_frame # wait for the next process tick, make sure the current level is removed
+	await get_tree().process_frame # wait for the next process frame, make sure the current level is removed
 	
 	get_tree().change_scene_to_file( level_path ) # change to the new level
 	
-	await get_tree().process_frame # Level Transition
+	await SceneTransition.fade_in()
 	
 	get_tree().paused = false # unpause game
 	

@@ -30,14 +30,19 @@ enum SIDE { LEFT, RIGHT, TOP, BOTTOM } # enum name is SIDE
 
 
 
-func _ready():
+func _ready() -> void:
 	_update_area()
 	# if in the editor, don't need to do anthing else (don't run code used in the game):
 	if Engine.is_editor_hint():
 		return
 	
-	#monitoring = false # turn off while initializing in case player spawn on level transition area & glitch
+	#turn off while initializing (till the first level loaded) in case player spawn on level transition area & glitch
+	monitoring = false
+	_place_player()
 	
+	await LevelManager.level_loaded # first level will be trigerred loading in Levelmanager _ready()
+	
+	monitoring = true
 	#Level transition only monitor player layer so don't need to specify whose body_entered (should only be player's
 	body_entered.connect( _player_entered )
 	
@@ -45,9 +50,36 @@ func _ready():
 
 
 func _player_entered( _p : Node2D ) -> void: # _p represents player
-	LevelManager.load_new_level( level, target_tansition_area, Vector2.ZERO ) # Note now may have 2 levels,
+	LevelManager.load_new_level( level, target_tansition_area, get_offset() ) # Note now may have 2 levels,
 	# so need to remove the current level in Level script
 	pass
+
+
+# place player to the correct pos once transitioned to the next level:
+func _place_player() -> void:
+	if name != LevelManager.target_transition: # check if this level transition match the one stored in the level manager
+		return
+	# if match, set player's global pos = global pos of the transition area + offset
+	PlayerManager.set_player_position( global_position + LevelManager.position_offset )
+
+
+# get offset (player's global pos to the global pos point of the transition area
+func get_offset() -> Vector2:
+	var offset : Vector2 = Vector2.ZERO
+	var player_pos = PlayerManager.player.global_position
+	
+	if side == SIDE.LEFT or side == SIDE.RIGHT:
+		offset.y = player_pos.y - global_position.y # difference to the transition area pos point on y
+		offset.x = 16 # on the edge of the transition area (16 to area pos point) (for right side)
+		if side == SIDE.LEFT:
+			offset.x *= -1
+	else: # on top or bottom side
+		offset.x = player_pos.x - global_position.x # difference to the transition area pos point on y
+		offset.y = 16 # on the edge of the transition area (16 to area pos point)
+		if side == SIDE.TOP:
+			offset.y *= -1
+			
+	return offset
 
 
 ## for setting collision shape (where levelTransition happens) size & pos:

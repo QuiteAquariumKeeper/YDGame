@@ -94,7 +94,7 @@ func _take_damage( hurt_box : HurtBox ) -> void:
 
 
 # can be used for healing too
-func update_hp( delta : int) -> void:
+func update_hp( delta : int ) -> void:
 	hp = clampi( hp + delta, 0, max_hp ) # clamp to int
 	PlayerHud.update_hp( hp, max_hp ) # calling autoload scene script PlayerHud
 	pass

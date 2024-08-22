@@ -19,13 +19,18 @@ func _ready() -> void:
 
 func add_player_instance() -> void:
 	player = PLAYER.instantiate() # create a new instance of player
-	
+	add_child( player )
 	# add the player to the scene somewhere. Added as a child to the root scene (so on the same layer as the 
 	# playground (eg)), so due to Y sort Enabled, the spawned player will be behind plants etc. So use 
-	# set_as_parent func
-	add_child( player )
+	# set_as_parent func in the level script
 	pass
 
+
+func set_health( hp : int, max_hp : int ) -> void:
+	player.hp = hp
+	player.max_hp = max_hp
+	player.update_hp( 0 )
+	
 
 func set_player_position( _new_pos : Vector2 ) -> void:
 	player.global_position = _new_pos

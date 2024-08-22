@@ -40,7 +40,8 @@ func _ready() -> void:
 	monitoring = false
 	_place_player()
 	
-	await LevelManager.level_loaded # first level will be trigerred loading in Levelmanager _ready()
+	await LevelManager.level_loaded # the first level is loaded signal will be trigerred by Levelmanager _ready(), not 
+	# from func load_new_level()
 	
 	monitoring = true
 	#Level transition only monitor player layer so don't need to specify whose body_entered (should only be player's
@@ -57,9 +58,9 @@ func _player_entered( _p : Node2D ) -> void: # _p represents player
 
 # place player to the correct pos once transitioned to the next level:
 func _place_player() -> void:
-	if name != LevelManager.target_transition: # check if this level transition match the one stored in the level manager
+	if name != LevelManager.target_transition: # check if it's the correct transition area our player should spawn next to
 		return
-	# if match, set player's global pos = global pos of the transition area + offset
+	#set player's global pos = global pos of the transition area + offset (get_offset() value already stored in position_offset
 	PlayerManager.set_player_position( global_position + LevelManager.position_offset )
 
 

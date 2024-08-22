@@ -16,7 +16,7 @@ var current_tilemap_bounds : Array[ Vector2 ] # 2 vectors of the top left and bo
 
 # for loading the first level so level_transition script _ready() can run
 func _ready() -> void:
-	 # wait to get the first process frame ie. level transition & first level is loaded
+	 # wait for the first process frame ie. all scenes are loaded, level transition & first level is loaded
 	await get_tree().process_frame
 	level_loaded.emit() # to be picked up in level_transition _ready()
 	

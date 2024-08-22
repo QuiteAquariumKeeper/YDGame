@@ -1,4 +1,5 @@
-extends CanvasLayer # don't need class name as the root node scene is put in auto load
+## Autoload, dont need class name
+extends CanvasLayer 
 
 @onready var animation_player : AnimationPlayer = $Control/ColorRect/AnimationPlayer
 

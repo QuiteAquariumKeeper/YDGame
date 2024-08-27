@@ -44,7 +44,6 @@ func _physics_process( _delta ): # called every physics take
 	move_and_slide() # method built in CharactorBody2D
 
 
-
 func SetDirection() -> bool: # if direction changes, return true.
 	if direction == Vector2.ZERO:
 		return false
@@ -53,7 +52,7 @@ func SetDirection() -> bool: # if direction changes, return true.
 	# angle 360-0 and covert to a number and * by the size of the array, then round to an integer. Gives 0 - 3. 
 	# 'direction + cardinal_direction * 0.1' is to skew a little to the direction i was facing first (cardi is already facing, direction
 	# is the new direction)
-	var new_dir = DIR_4[ direction_id ] # eg. DIR_4[0]
+	var new_dir = DIR_4[ direction_id ] # eg. DIR_4[0] ie. the first DIR which is RIGHT
 		
 	if new_dir == cardinal_direction:
 		return false
@@ -64,7 +63,6 @@ func SetDirection() -> bool: # if direction changes, return true.
 	sprite.scale.x = -1 if cardinal_direction == Vector2.LEFT else 1 # 1 facing right is my original set scale
 	return true
 
-	
 
 func UpdateAnimation( state : String ) -> void:
 	animation_player.play( state + "_" + AnimDirection())

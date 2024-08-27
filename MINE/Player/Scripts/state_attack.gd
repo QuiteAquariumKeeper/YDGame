@@ -32,7 +32,8 @@ func Enter() -> void:
 	attacking = true
 	
 	await get_tree().create_timer( 0.075 ).timeout # wait 0.075s before running next script (remove hitbox)
-	hurt_box.monitoring = true
+	if attacking == true: # added by me to stop hurtbox from staying on when attack & get stunned at the same time
+		hurt_box.monitoring = true
 	pass
 	
 
@@ -67,5 +68,5 @@ func HandleInput( _event: InputEvent ) -> State:
 	return null
 
 
-func EndAttack( _newAnimName : String ) -> void: # when the signal animation_finished fires, it passes a parameter _newAnimName, therefore added to avoid compiling issue
+func EndAttack( _newAnimName : String ) -> void: # when signal animation_finished fires it passes a parameter _newAnimName
 	attacking = false

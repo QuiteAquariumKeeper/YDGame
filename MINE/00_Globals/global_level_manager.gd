@@ -18,7 +18,7 @@ var current_tilemap_bounds : Array[ Vector2 ] # 2 vectors of the top left and bo
 func _ready() -> void:
 	 # wait for the first process frame ie. all scenes are loaded, level transition & first level is loaded
 	await get_tree().process_frame
-	level_loaded.emit() # to be picked up in level_transition _ready()
+	level_loaded.emit() # to be picked up in level_transition _ready(), just to make it stop waiting & run rest of the code
 	
 
 func ChangeTilemapBounds( bounds : Array[ Vector2] ) -> void: # getting called in LevelTileMap

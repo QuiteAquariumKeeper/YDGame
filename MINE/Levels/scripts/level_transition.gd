@@ -36,17 +36,17 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		return
 	
-	#turn off while initializing (till the first level loaded) in case player spawn on level transition area & glitch
+	# turn off while initializing in case players pos overlap with a transition area on the new level & trigger imedieately
 	monitoring = false
+	# move player to the location he needs to be upon entering the new level just loaded; once moved, won't trigger another.
 	_place_player()
 	
-	await LevelManager.level_loaded # the first level is loaded signal will be trigerred by Levelmanager _ready(), not 
-	# from func load_new_level()
+	await LevelManager.level_loaded # the 1st level loaded signal is sent by Levelmanager _ready(), not func load_new_level(),
+	# just to stop await & continue running
 	
-	monitoring = true
-	#Level transition only monitor player layer so don't need to specify whose body_entered (should only be player's
+	monitoring = true # can turn on once we know the new level is completely loaded
+	# Level transition only monitor player layer so don't need to specify whose body_entered (should only be player's
 	body_entered.connect( _player_entered )
-	
 	pass
 
 
@@ -58,7 +58,8 @@ func _player_entered( _p : Node2D ) -> void: # _p represents player
 
 # place player to the correct pos once transitioned to the next level:
 func _place_player() -> void:
-	if name != LevelManager.target_transition: # check if it's the correct transition area our player should spawn next to
+	# check if it's the correct transition area player should spawn next to. Name is of the new level (current one is removed)
+	if name != LevelManager.target_transition:
 		return
 	#set player's global pos = global pos of the transition area + offset (get_offset() value already stored in position_offset
 	PlayerManager.set_player_position( global_position + LevelManager.position_offset )

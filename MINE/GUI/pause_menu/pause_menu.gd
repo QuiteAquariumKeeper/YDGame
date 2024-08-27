@@ -1,9 +1,12 @@
 ## Auto load
 extends CanvasLayer
 
+signal shown
+signal hidden
 
-@onready var button_save = $VBoxContainer/Button_Save
-@onready var button_load = $VBoxContainer/Button_Load
+@onready var button_save = $Control/HBoxContainer/Button_Save
+@onready var button_load = $Control/HBoxContainer/Button_Load
+@onready var item_description = $Control/ItemDescription
 
 var is_paused : bool = false
 
@@ -28,17 +31,17 @@ func _unhandled_input(event : InputEvent) -> void:
 	
 	
 func show_pause_menu() -> void:
-	get_tree().paused = true # PauseMenu node is set to always in Process so won't pause
+	get_tree().paused = true # PauseMenu node is set to Always in Process so won't pause
 	visible = true
 	is_paused = true
-	# make buttons work. 2 buttons are connected (sisters) so setting up once can do
-	button_save.grab_focus() 
+	shown.emit() # for inventory
 
 
 func hide_pause_menu() -> void:
 	get_tree().paused = false
 	visible = false
 	is_paused = false
+	hidden.emit() # for inventory
 	
 	
 func _on_save_pressed() -> void:
@@ -56,3 +59,8 @@ func _on_load_pressed() -> void:
 	await LevelManager.level_load_started # that's when screen is already back, then hide menu, looks smoother
 	hide_pause_menu()
 	pass
+
+
+func update_item_description( new_text : String ) -> void: # called in inventory_slot_ui script
+	item_description.text = new_text
+	

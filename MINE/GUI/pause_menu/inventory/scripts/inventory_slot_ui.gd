@@ -1,4 +1,4 @@
-# Attached to InventorySlot scene
+## Attached to InventorySlot scene, for displaying slot_data texture and quantity in UI to match Slot_data
 class_name Inventory_slot_UI extends Button
 
 var slot_data : SlotData : set = set_slot_data # whenever we set this var (in inventory_ui script 
@@ -13,8 +13,10 @@ func _ready() -> void:
 	label.text = ""
 	focus_entered.connect( item_focused ) # focus_entered is a signal of scripts extending Button (this one)
 	focus_exited.connect( item_unfocused )
+	pressed.connect( item_pressed ) # For using items in inventory. pressed is a signal of Button type script
 
-func set_slot_data( value : SlotData ) -> void:
+
+func set_slot_data( value : SlotData ) -> void: # being called in set
 	slot_data = value
 	if slot_data == null:
 		return # ok to have empty slots
@@ -31,3 +33,14 @@ func item_focused() -> void:
 
 func item_unfocused() -> void:
 	PauseMenu.update_item_description( "" )
+
+
+func item_pressed() -> void:
+	if slot_data:
+		if slot_data.item_data: #usually there should be item_data when there's slot_data
+			var was_used = slot_data.item_data.use() # use() is bool func, var is true or falsue
+			if was_used == false: # item can't be used
+				return
+			slot_data.quantity -= 1
+			label.text = str( slot_data.quantity )
+	pass

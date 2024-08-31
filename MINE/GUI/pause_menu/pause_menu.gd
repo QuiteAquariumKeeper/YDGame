@@ -4,9 +4,10 @@ extends CanvasLayer
 signal shown
 signal hidden
 
-@onready var button_save = $Control/HBoxContainer/Button_Save
-@onready var button_load = $Control/HBoxContainer/Button_Load
-@onready var item_description = $Control/ItemDescription
+@onready var audio_stream_player :AudioStreamPlayer = $Control/AudioStreamPlayer # non-position audio so don't need 2D
+@onready var button_save : Button = $Control/HBoxContainer/Button_Save
+@onready var button_load : Button = $Control/HBoxContainer/Button_Load
+@onready var item_description : Label = $Control/ItemDescription
 
 var is_paused : bool = false
 
@@ -64,3 +65,8 @@ func _on_load_pressed() -> void:
 func update_item_description( new_text : String ) -> void: # called in inventory_slot_ui script
 	item_description.text = new_text
 	
+
+# for playing item effect sound eg. healing
+func play_audio( audio : AudioStream ) -> void:
+	audio_stream_player.stream = audio # set the stream to what is passed in
+	audio_stream_player.play()

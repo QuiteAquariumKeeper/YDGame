@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://ca7xd2td754gw"]
+[gd_scene load_steps=10 format=3 uid="uid://ca7xd2td754gw"]
 
 [ext_resource type="Script" path="res://Levels/scripts/level.gd" id="1_j75lb"]
 [ext_resource type="PackedScene" uid="uid://c8pgv6cqitw8j" path="res://Tile Maps/grass-01.tscn" id="2_fsn0c"]
 [ext_resource type="PackedScene" uid="uid://drqbppd44ocf" path="res://Levels/player_spawn.tscn" id="3_5xwo1"]
 [ext_resource type="PackedScene" uid="uid://cqm72ivekbyoo" path="res://Levels/level_transition.tscn" id="4_ihg1b"]
+[ext_resource type="PackedScene" uid="uid://cto0ifx5een1j" path="res://Items/item_pickup/item_pickup.tscn" id="5_kkbnn"]
+[ext_resource type="Resource" uid="uid://cr64kfg5exntp" path="res://Items/gem.tres" id="6_hi7qp"]
+[ext_resource type="Resource" uid="uid://dv2tfw2p3f40j" path="res://Items/potion.tres" id="7_gi1sd"]
+[ext_resource type="Resource" uid="uid://bts6cjktm3wd5" path="res://Items/stone.tres" id="8_36dds"]
+[ext_resource type="Resource" uid="uid://bmixhi3kd15yk" path="res://Items/apple.tres" id="9_2633e"]
 
 [node name="01" type="Node2D"]
 script = ExtResource("1_j75lb")
@@ -25,3 +30,19 @@ position = Vector2(1056, 368)
 level = "res://Levels/Area01/03.tscn"
 size = 3
 side = 1
+
+[node name="ItemPickup" parent="." instance=ExtResource("5_kkbnn")]
+position = Vector2(760, 215)
+item_data = ExtResource("6_hi7qp")
+
+[node name="ItemPickup2" parent="." instance=ExtResource("5_kkbnn")]
+position = Vector2(926, 252)
+item_data = ExtResource("7_gi1sd")
+
+[node name="ItemPickup3" parent="." instance=ExtResource("5_kkbnn")]
+position = Vector2(849, 301)
+item_data = ExtResource("8_36dds")
+
+[node name="ItemPickup4" parent="." instance=ExtResource("5_kkbnn")]
+position = Vector2(929, 328)
+item_data = ExtResource("9_2633e")

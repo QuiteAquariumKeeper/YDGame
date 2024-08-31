@@ -50,10 +50,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -459.0
-offset_top = -267.0
-offset_right = -281.0
-offset_bottom = -218.0
+offset_left = -373.0
+offset_top = -231.0
+offset_right = -195.0
+offset_bottom = -182.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_font_sizes/font_size = 35
@@ -66,15 +66,14 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -442.0
-offset_top = -21.0
-offset_right = -182.0
-offset_bottom = 28.0
+offset_left = -368.0
+offset_top = -1.0
+offset_right = -108.0
+offset_bottom = 48.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(0.621524, 0.621524, 0.621524, 1)
 theme_override_font_sizes/font_size = 15
-text = "This drink restores your health!"
 autowrap_mode = 2
 
 [node name="PanelContainer" type="PanelContainer" parent="Control"]
@@ -116,10 +115,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -470.0
-offset_top = 222.5
-offset_right = -296.0
-offset_bottom = 265.5
+offset_left = -368.0
+offset_top = 170.0
+offset_right = -194.0
+offset_bottom = 213.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -134,3 +133,6 @@ custom_minimum_size = Vector2(85, 0)
 layout_mode = 2
 theme_override_font_sizes/font_size = 25
 text = "Load"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control"]
+max_polyphony = 4

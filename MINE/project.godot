@@ -26,10 +26,10 @@ PauseMenu="*res://GUI/pause_menu/pause_menu.tscn"
 
 [display]
 
-window/size/viewport_width=1000
-window/size/viewport_height=600
-window/size/window_width_override=1920
-window/size/window_height_override=1080
+window/size/viewport_width=800
+window/size/viewport_height=500
+window/size/window_width_override=1820
+window/size/window_height_override=980
 window/stretch/mode="viewport"
 
 [file_customization]

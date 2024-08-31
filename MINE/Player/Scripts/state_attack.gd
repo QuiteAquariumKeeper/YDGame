@@ -32,8 +32,12 @@ func Enter() -> void:
 	attacking = true
 	
 	await get_tree().create_timer( 0.075 ).timeout # wait 0.075s before running next script (remove hitbox)
-	if attacking == true: # added by me to stop hurtbox from staying on when attack & get stunned at the same time
-		hurt_box.monitoring = true
+	#if attacking == true: # added by me to stop hurtbox from staying on when attack & get stunned at the same time
+	hurt_box.monitoring = true
+	
+	await get_tree().create_timer( 0.5 ).timeout # added myself
+	hurt_box.monitoring = false # added myself
+	
 	pass
 	
 

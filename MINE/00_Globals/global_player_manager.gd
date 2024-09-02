@@ -4,6 +4,7 @@ extends Node
 # drag & dropped the player scene from filesystem. This is the reference to create an instance of the
 # player in different levels
 const PLAYER = preload("res://Player/player.tscn")
+# an instance of InventoryData Resource
 const INVENTORY_DATA : InventoryData = preload("res://GUI/pause_menu/inventory/player_inventory.tres")
 
 var player : Player

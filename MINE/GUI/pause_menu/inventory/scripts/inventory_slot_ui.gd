@@ -16,7 +16,7 @@ func _ready() -> void:
 	pressed.connect( item_pressed ) # For using items in inventory. pressed is a signal of Button type script
 
 
-func set_slot_data( value : SlotData ) -> void: # being called in set
+func set_slot_data( value : SlotData ) -> void: # being called by set above
 	slot_data = value
 	if slot_data == null:
 		return # ok to have empty slots
@@ -37,10 +37,10 @@ func item_unfocused() -> void:
 
 func item_pressed() -> void:
 	if slot_data:
-		if slot_data.item_data: #usually there should be item_data when there's slot_data
+		if slot_data.item_data:
 			var was_used = slot_data.item_data.use() # use() is bool func, var is true or falsue
 			if was_used == false: # item can't be used
 				return
-			slot_data.quantity -= 1
+			slot_data.quantity -= 1 # quantity is set, triggerring set in slot_data script
 			label.text = str( slot_data.quantity )
 	pass

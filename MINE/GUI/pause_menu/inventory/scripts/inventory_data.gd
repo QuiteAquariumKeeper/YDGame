@@ -36,7 +36,7 @@ func add_item( item : ItemData, count : int = 1 ) -> bool:
 func connect_slots() -> void:
 	for s in slots:
 		if s:
-			s.changed.connect( slot_changed ) # for the existing items in slots. Only connect when one of them
+			s.changed.connect( slot_changed ) # for the existing items in slots. Only connect when one of the
 			# quantity reaches 0
 	
 
@@ -49,3 +49,45 @@ func slot_changed() -> void:
 				var index = slots.find( s ) # find the index of that slot in the array
 				slots[ index ] = null
 				emit_changed() # received in inventory_ui script. Slot removed but still displying there
+
+#---------------------------------------------------------------------------------------------------------
+# For saving:
+
+## Gather the inventory into an array (called & to be saved in dict in SaveManager)
+func get_save_data() -> Array:
+	var item_save : Array = []
+	for i in slots.size(): # i=0-9 if size is 10
+		item_save.append( item_to_save( slots[i] ) ) # take out what's being appended to a new func to breakdown
+	return item_save
+
+## Convert each inentory item into a dict (to be added to the array above)
+func item_to_save( slot : SlotData ) -> Dictionary:
+	var result = { item_path = "", quantity = 0 } # a {} line in dict items array. item_path is resource path
+	if slot != null:
+		result.quantity = slot.quantity
+		if slot.item_data != null:
+			result.item_path = slot.item_data.resource_path # path to the gem resource eg
+	return result
+
+
+# For loading:
+## called in load func in SaveManager. Pass in dict items array
+func parse_save_data( save_data: Array ) -> void:
+	# if resize player inventory size, might need to adjust to check for size changes!!!
+	var array_size = slots.size() # keep track of slots size (eg 10) that we give before run game
+	slots.clear() # size = 0
+	slots.resize( array_size ) # resize to 10 (eg), but all are null which is what we need
+	for i in save_data.size():
+		slots[ i ] = item_from_save( save_data[ i ] ) # pass in a {} line in dict items
+		
+	connect_slots() # all new slot_data get connected (for focus stay valid when item used up)
+	pass
+
+## Convert each dict line in items ( {item_path, quantity} ) into a slot_data:
+func item_from_save( save_object : Dictionary ) -> SlotData:
+	if save_object.item_path == "": # item is resource path
+		return null # return null so the slot will be empty
+	var new_slot : SlotData = SlotData.new() # create a new empty slot
+	new_slot.item_data = load( save_object.item_path ) # path to the item last saved (in item_to_save func)
+	new_slot.quantity = int(save_object.quantity) # quantity is a string in dict
+	return new_slot

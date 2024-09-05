@@ -1,6 +1,7 @@
-# Generic ItemPickup that can be dropped & assigned to other item Resources that can be picked up
+# Generic ItemPickup that can be used to match other item Resources that can be picked up (eg. drops)
+# ItemPickup scene changed type to charactorbody2D to give a speed as drops and collision to walls.
 @tool
-class_name ItemPickup extends Node2D
+class_name ItemPickup extends CharacterBody2D
 
 @export var item_data : ItemData : set = _set_item_data
 
@@ -10,10 +11,22 @@ class_name ItemPickup extends Node2D
 
 
 func _ready() -> void:
-	_update_texture() # didn't add texture to our sprite2D (not neccessary as this is a @tool script can use Inspector
+	_update_texture() # didn't add texture to sprite2D (not neccessary as it's @tool script, can use Inspector
 	if Engine.is_editor_hint():
 		return
 	area_2d.body_entered.connect( _on_body_entered )
+
+
+# For drop items to bounce off walls if near walls
+func _physics_process( delta : float ) -> void:
+	# move-and_collide returns a KinematicCollision2D, containing info of a collision when stopped
+	var collision_info = move_and_collide( velocity * delta )
+	if collision_info: # if there's a collision if ie. a collision happened
+		# Get the colliding body's shape's (wall's) normal at the point of collision. Then bounce.
+		velocity = velocity.bounce( collision_info.get_normal() )
+	# for gradually decresing velocity (can use @export var to determine friction, but here is 4)
+	velocity -= velocity * delta * 4
+	
 
 
 func _on_body_entered( b ) -> void:

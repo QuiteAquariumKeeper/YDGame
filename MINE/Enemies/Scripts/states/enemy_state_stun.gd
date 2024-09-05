@@ -24,7 +24,7 @@ func enter() -> void:
 	_animation_finished = false
 	
 	# global_pos is the pos in the game world, position is its pos within his parent node. It's direction to the 
-	# hurtbox (the yellow collisionShape2D on slime)??????
+	# hurtbox (of the player in this case)
 	_direction = enemy.global_position.direction_to( _damage_position )
 	
 	enemy.set_direction( _direction )
@@ -56,7 +56,8 @@ func physics( _delta : float ) -> EnemyState:
 	return null
 
 
-func _on_enemy_damaged( hurt_box: HurtBox ) -> void: # once damaged, change to stun state in the state machine
+# Run when enemy's take_damage() func signals. Once damaged, change to stun state in the state machine
+func _on_enemy_damaged( hurt_box: HurtBox ) -> void: 
 	_damage_position = hurt_box.global_position # hurtbox inherits Node2D so has a position
 	state_machine.change_state( self )
 	

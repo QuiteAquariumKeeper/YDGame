@@ -66,6 +66,7 @@ func anim_direction() -> String:
 		return "side"
 
 
+# Run when hitbox signals
 func _take_damage ( hurt_box: HurtBox ) -> void:
 	# for enemy to have a little invunerable period after being hit so don't stuck in a stun loop
 	if invulnerable == true:
@@ -73,7 +74,7 @@ func _take_damage ( hurt_box: HurtBox ) -> void:
 	# otherwise:
 	hp -= hurt_box.damage
 	if hp > 0:
-		enemy_damaged.emit( hurt_box ) # pass in hurt_box so enemy's states will have access to hurtbox's var
+		enemy_damaged.emit( hurt_box ) # pass in hurt_box so enemy's stun state have access to hurtbox's var
 	else:
-		enemy_destroyed.emit( hurt_box )
+		enemy_destroyed.emit( hurt_box ) # emits to destory state
 	

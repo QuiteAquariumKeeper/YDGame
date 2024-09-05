@@ -1,6 +1,6 @@
 class_name State_Attack extends State # duplicated from State so extends from State
 
-## Don't want the player to leave attack state until it's completed (unlike walk or idle). Can use time or animation player
+## Don't leave attack state until it's completed (unlike walk or idle). Can use time or animation player
 var attacking : bool = false # false as default = playing not attacking
 
 @export var attack_sound : AudioStream
@@ -13,7 +13,8 @@ var attacking : bool = false # false as default = playing not attacking
 
 @onready var idle : State = $"../Idle"
 @onready var walk : State = $"../Walk"
-@onready var hurt_box : HurtBox = %AttackHurtBox # it's made unique so if it's moved around the scene tree it still can be refed
+@onready var hurt_box : HurtBox = %AttackHurtBox # it's made unique so if it's moved around the scene tree it
+#still can be refed
 
 
  
@@ -22,7 +23,8 @@ func Enter() -> void:
 	player.UpdateAnimation("Attack")
 	attack_anim.play( "Attack_" + player.AnimDirection() ) # for attack effects
 	## Using signal to connect to our func EndAttack. animation_finished is a signal in animation player
-	animation_player.animation_finished.connect( EndAttack ) # as soon as the anima playing finishes, a signal fires off to EndAttack
+	animation_player.animation_finished.connect( EndAttack ) # as soon as the anima playing finishes, a signal
+	#fires off to EndAttack
 	
 	## the node AudioStreamerPlayer2D doesnt have a stream in the inspector, so need to set by script:
 	audio.stream = attack_sound
@@ -32,7 +34,11 @@ func Enter() -> void:
 	attacking = true
 	
 	await get_tree().create_timer( 0.075 ).timeout # wait 0.075s before running next script (remove hitbox)
-	#if attacking == true: # added by me to stop hurtbox from staying on when attack & get stunned at the same time
+	
+	#if attacking == true: # added by Michael in E19
+	
+		# if player get stunned right after attack (in less than 0.075s), monitoring is turned on after
+		# exit() where monitoring is turn off, so it stays on
 	hurt_box.monitoring = true
 	
 	await get_tree().create_timer( 0.5 ).timeout # added myself

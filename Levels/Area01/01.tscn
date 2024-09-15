@@ -32,22 +32,6 @@ level = "res://Levels/Area01/03.tscn"
 size = 3
 side = 1
 
-[node name="ItemPickup" parent="." instance=ExtResource("5_kkbnn")]
-position = Vector2(759.838, 215.728)
-item_data = ExtResource("6_hi7qp")
-
-[node name="ItemPickup2" parent="." instance=ExtResource("5_kkbnn")]
-position = Vector2(926, 252)
-item_data = ExtResource("7_gi1sd")
-
-[node name="ItemPickup3" parent="." instance=ExtResource("5_kkbnn")]
-position = Vector2(849, 301)
-item_data = ExtResource("8_36dds")
-
-[node name="ItemPickup4" parent="." instance=ExtResource("5_kkbnn")]
-position = Vector2(929, 328)
-item_data = ExtResource("9_2633e")
-
 [node name="TreasureChest" parent="." instance=ExtResource("10_iw4my")]
 position = Vector2(995, 156)
 item_data = ExtResource("9_2633e")
@@ -62,3 +46,19 @@ quantity = 10
 position = Vector2(996, 272)
 item_data = ExtResource("7_gi1sd")
 quantity = 1
+
+[node name="ItemPickup" parent="." instance=ExtResource("5_kkbnn")]
+position = Vector2(684, 239)
+item_data = ExtResource("6_hi7qp")
+
+[node name="ItemPickup2" parent="." instance=ExtResource("5_kkbnn")]
+position = Vector2(926, 252)
+item_data = ExtResource("7_gi1sd")
+
+[node name="ItemPickup3" parent="." instance=ExtResource("5_kkbnn")]
+position = Vector2(849, 301)
+item_data = ExtResource("8_36dds")
+
+[node name="ItemPickup4" parent="." instance=ExtResource("5_kkbnn")]
+position = Vector2(929, 328)
+item_data = ExtResource("9_2633e")

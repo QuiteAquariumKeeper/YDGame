@@ -1,0 +1,26 @@
+[gd_scene load_steps=2 format=3 uid="uid://c0vovtbfwfvk0"]
+
+[sub_resource type="GDScript" id="GDScript_bv3i2"]
+script/source = "class_name RemainedDrops extends Node2D
+
+@onready var persistent_data_handler : PersistentDataHandler = $PersistentDataHandler
+
+var drops : Array = []
+
+
+func _ready() -> void:
+	persistent_data_handler.data_loaded.connect( set_drops_state )
+	set_drops_state()
+	
+	
+	pass
+
+func set_drops_state() -> void:
+	
+	pass
+	
+
+"
+
+[node name="ReaminedDrops" type="Node2D"]
+script = SubResource("GDScript_bv3i2")

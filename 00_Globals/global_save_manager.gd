@@ -89,3 +89,11 @@ func add_persistent_value( value : String ) -> void:
 func check_persistent_value( value : String ) -> bool:
 	var p = current_save.persistence as Array
 	return p.has( value ) # return true if p array has "value" ie. "value" has been saved
+
+
+########################################### Folkor's method for adding data persistence to drops remained on ground:   13 th
+#func remove_persistent_value( value : String) -> void:
+	#if check_persistent_value( value ) == true:
+		#var index = current_save.persistence.find(value)
+		#current_save.persistence[ index ] = null
+	#pass

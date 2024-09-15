@@ -1,0 +1,138 @@
+[gd_scene load_steps=8 format=3 uid="uid://c5r0jbii65prx"]
+
+[ext_resource type="Script" path="res://GUI/pause_menu/pause_menu.gd" id="1_rui4b"]
+[ext_resource type="Texture2D" uid="uid://bf2i6kc6y7daj" path="res://Items/sprites/items.png" id="2_adw15"]
+[ext_resource type="Script" path="res://GUI/pause_menu/inventory/scripts/inventory_ui.gd" id="3_c2f8r"]
+[ext_resource type="PackedScene" uid="uid://xpik6247gcim" path="res://GUI/pause_menu/inventory/inventory_slot.tscn" id="3_tvcs7"]
+[ext_resource type="Resource" uid="uid://pjm63ujrk4et" path="res://GUI/pause_menu/inventory/player_inventory.tres" id="4_74nif"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_s1dnd"]
+atlas = ExtResource("2_adw15")
+region = Rect2(96, 0, 32, 32)
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_yqcyi"]
+content_margin_left = 10.0
+content_margin_top = 10.0
+content_margin_right = 10.0
+content_margin_bottom = 10.0
+texture = SubResource("AtlasTexture_s1dnd")
+texture_margin_left = 14.0
+texture_margin_top = 14.0
+texture_margin_right = 14.0
+texture_margin_bottom = 14.0
+
+[node name="PauseMenu" type="CanvasLayer"]
+process_mode = 3
+script = ExtResource("1_rui4b")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.203922, 0.203922, 0.203922, 0.792157)
+
+[node name="Label" type="Label" parent="Control"]
+modulate = Color(0.317647, 0.588235, 0.576471, 0.792157)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -373.0
+offset_top = -231.0
+offset_right = -195.0
+offset_bottom = -182.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 35
+text = "[ PAUSED ]"
+
+[node name="ItemDescription" type="Label" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -368.0
+offset_top = -1.0
+offset_right = -108.0
+offset_bottom = 48.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.621524, 0.621524, 0.621524, 1)
+theme_override_font_sizes/font_size = 15
+autowrap_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="Control"]
+layout_mode = 0
+offset_left = 58.0
+offset_top = 147.0
+offset_right = 254.0
+offset_bottom = 235.0
+theme_override_styles/panel = SubResource("StyleBoxTexture_yqcyi")
+
+[node name="GridContainer" type="GridContainer" parent="Control/PanelContainer"]
+layout_mode = 2
+columns = 5
+script = ExtResource("3_c2f8r")
+data = ExtResource("4_74nif")
+
+[node name="InventorySlot" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_tvcs7")]
+layout_mode = 2
+
+[node name="InventorySlot2" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_tvcs7")]
+layout_mode = 2
+
+[node name="InventorySlot3" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_tvcs7")]
+layout_mode = 2
+
+[node name="InventorySlot4" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_tvcs7")]
+layout_mode = 2
+
+[node name="InventorySlot5" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_tvcs7")]
+layout_mode = 2
+
+[node name="InventorySlot6" parent="Control/PanelContainer/GridContainer" instance=ExtResource("3_tvcs7")]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -368.0
+offset_top = 170.0
+offset_right = -194.0
+offset_bottom = 213.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Button_Save" type="Button" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Save"
+
+[node name="Button_Load" type="Button" parent="Control/HBoxContainer"]
+custom_minimum_size = Vector2(85, 0)
+layout_mode = 2
+theme_override_font_sizes/font_size = 25
+text = "Load"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="Control"]
+max_polyphony = 4

@@ -2,7 +2,8 @@ class_name EnemyState extends Node
 
 
 ## Stores a ref to the enemy that this state belongs to
-var enemy : Enemy # didn't make this static bc if there're more enemies, want the script to affect all on the screen. This var is per class
+var enemy : Enemy # didn't make this static bc if there're more enemies, want the script to
+# affect all on the screen. This var is per class
 var state_machine : EnemyStateMachine
 
 

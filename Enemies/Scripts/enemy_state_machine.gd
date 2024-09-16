@@ -21,6 +21,7 @@ func _physics_process(delta):
 	pass
 	
 
+# Being called in enemy script
 func initialize( _enemy : Enemy ) -> void:
 	states = []
 	
@@ -36,7 +37,8 @@ func initialize( _enemy : Enemy ) -> void:
 	
 	if states.size() > 0:
 		change_state( states[0] )
-		process_mode = Node.PROCESS_MODE_INHERIT # inherit processing from the parent. Allow us to pause game & enemies will pause with it
+		# inherit processing from the parent. Allow us to pause game & enemies will pause with it
+		process_mode = Node.PROCESS_MODE_INHERIT 
 	pass
 	
 	

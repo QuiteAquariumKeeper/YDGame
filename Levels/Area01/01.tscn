@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ca7xd2td754gw"]
+[gd_scene load_steps=12 format=3 uid="uid://ca7xd2td754gw"]
 
 [ext_resource type="Script" path="res://Levels/scripts/level.gd" id="1_j75lb"]
 [ext_resource type="PackedScene" uid="uid://c8pgv6cqitw8j" path="res://Tile Maps/grass-01.tscn" id="2_fsn0c"]
@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://bts6cjktm3wd5" path="res://Items/stone.tres" id="8_36dds"]
 [ext_resource type="Resource" uid="uid://bmixhi3kd15yk" path="res://Items/apple.tres" id="9_2633e"]
 [ext_resource type="PackedScene" uid="uid://nfqvq7y462m8" path="res://Interactable/TreasureChest/treasure_chest.tscn" id="10_iw4my"]
+[ext_resource type="PackedScene" uid="uid://b2q0lxdy1savf" path="res://Enemies/goblin/goblin.tscn" id="11_nlk8w"]
 
 [node name="01" type="Node2D"]
 script = ExtResource("1_j75lb")
@@ -62,3 +63,12 @@ item_data = ExtResource("8_36dds")
 [node name="ItemPickup4" parent="." instance=ExtResource("5_kkbnn")]
 position = Vector2(929, 328)
 item_data = ExtResource("9_2633e")
+
+[node name="Goblin" parent="." instance=ExtResource("11_nlk8w")]
+position = Vector2(677, 139)
+
+[node name="Goblin2" parent="." instance=ExtResource("11_nlk8w")]
+position = Vector2(586, 198)
+
+[node name="Goblin3" parent="." instance=ExtResource("11_nlk8w")]
+position = Vector2(561, 97)

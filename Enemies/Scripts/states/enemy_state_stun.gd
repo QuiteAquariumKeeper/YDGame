@@ -1,14 +1,14 @@
 class_name EnemyStateStun extends EnemyState
 
 
-@export var anim_name : String = "Stun" # animation name can be changed in Inspector with the rest of code working
+@export var anim_name : String = "Stun" # anim name can change in Inspector with the rest of code working
 @export var knockback_speed : float = 200.0
 @export var decelerate_speed : float = 10.0
 
 @export_category("AI") # for categorying below
 @export var next_state : EnemyState
 
-var _damage_position : Vector2
+var _damage_position : Vector2 # Calculated in _on_enemy_damaged() below
 var _direction : Vector2
 var _animation_finished : bool = false
 
@@ -23,8 +23,8 @@ func enter() -> void:
 	enemy.invulnerable = true
 	_animation_finished = false
 	
-	# global_pos is the pos in the game world, position is its pos within his parent node. It's direction to the 
-	# hurtbox (of the player in this case)
+	# global_pos is the pos in the game world, position is its pos within his parent node. It's direction
+	# to the hurtbox (of the player in this case)
 	_direction = enemy.global_position.direction_to( _damage_position )
 	
 	enemy.set_direction( _direction )

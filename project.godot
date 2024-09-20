@@ -37,6 +37,7 @@ window/stretch/mode="viewport"
 folder_colors={
 "res://Enemies/Scripts/": "pink",
 "res://GUI/pause_menu/inventory/scripts/": "pink",
+"res://Interactable/Dungen/scripts/": "pink",
 "res://Items/scripts/": "pink",
 "res://Levels/scripts/": "pink",
 "res://Player/Scripts/": "pink"

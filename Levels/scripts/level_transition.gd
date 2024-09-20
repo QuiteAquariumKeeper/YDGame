@@ -7,21 +7,19 @@ enum SIDE { LEFT, RIGHT, TOP, BOTTOM } # enum name is SIDE
 
 @export_file( "*.tscn" ) var level # limit to scene files that we can choose from in Inspector
 @export var target_tansition_area : String = "LevelTransition" # default name, change in Inspector
+@export var center_player : bool = false # for spitting player out at the center
 
 @export_category("Collision Area Settings")
-
 # size 1-12 (default range), incremental 1, manually default to 2, but useer can put greater than 12.
 # Turned on Local to Scene for the CollisionShape2D in Inspector under Resource so they are independent
 @export_range( 1, 12, 1, "or_greater" ) var size = 2:
 	set( _v ):
 		size = _v
 		_update_area() # this is running in the editor everytime the var is set
-
 @export var side : SIDE = SIDE.LEFT:
 	set( _v ):
 		side = _v
 		_update_area()
-
 @export var snap_to_grid : bool = false:
 	set( _v ):
 		_snap_to_grid()
@@ -65,19 +63,28 @@ func _place_player() -> void:
 	PlayerManager.set_player_position( global_position + LevelManager.position_offset )
 
 
-# get offset (player's global pos to the global pos point of the transition area
+# For calculating the offset from the level transition the player just entered, to know where to spit
+# him out on the other side
 func get_offset() -> Vector2:
 	var offset : Vector2 = Vector2.ZERO
 	var player_pos = PlayerManager.player.global_position
 	
 	if side == SIDE.LEFT or side == SIDE.RIGHT:
-		offset.y = player_pos.y - global_position.y # difference to the transition area pos point on y
-		offset.x = 16 # on the edge of the transition area (16 to area pos point) (for right side)
+		if center_player == true: # To be ticked true in Inspector (i didn't, Michael did)
+			offset.y = 0 # Plauer#'ll be spit out at the starting point (center) of the new trans area.
+		else:
+			# Dist to the starting point of the entered trans area on y. This offset will be used to position
+			# the player on the new trans area (dist to its center) - So if trans area width differs, may work oddly.
+			offset.y = player_pos.y - global_position.y
+		offset.x = 16 # When enters trans area on the right, spit out from the left at trans area starting point with x +16
 		if side == SIDE.LEFT:
 			offset.x *= -1
 	else: # on top or bottom side
-		offset.x = player_pos.x - global_position.x # difference to the transition area pos point on y
-		offset.y = 16 # on the edge of the transition area (16 to area pos point)
+		if center_player == true: # To be ticked true in Inspector (I didn't)
+			offset.x = 0
+		else:
+			offset.x = player_pos.x - global_position.x # difference to the transition area pos point on y
+		offset.y = 16
 		if side == SIDE.TOP:
 			offset.y *= -1
 			
@@ -91,7 +98,7 @@ func _update_area() -> void:
 	
 	if side == SIDE.TOP:
 		new_rec.x *= size # if size = 2, new_rec = (64,32)
-		new_position.y -= 16
+		new_position.y -= 16 # so the starting point is on the bottm side of rec (was in centre)
 	elif side == SIDE.BOTTOM:
 		new_rec.x *= size
 		new_position.y += 16

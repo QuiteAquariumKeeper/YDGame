@@ -1,23 +1,24 @@
-[gd_scene load_steps=44 format=3 uid="uid://dpr7er47327hc"]
+[gd_scene load_steps=46 format=3 uid="uid://dpr7er47327hc"]
 
 [ext_resource type="Script" path="res://Player/Scripts/player.gd" id="1_ttowv"]
 [ext_resource type="Texture2D" uid="uid://lehfc5bfx8t" path="res://Player/Sprites/PlayerSprite02.png" id="2_xrjkn"]
 [ext_resource type="Texture2D" uid="uid://id0r1pfrpf71" path="res://Player/Sprites/AttackSprite01.png" id="3_qbilq"]
 [ext_resource type="Script" path="res://Player/Scripts/player_state_machine.gd" id="3_ubuep"]
 [ext_resource type="Texture2D" uid="uid://b27875oba6ljl" path="res://Player/Sprites/Shadow.png" id="3_ykbp3"]
-[ext_resource type="Script" path="res://Player/Scripts/state_idle.gd" id="4_0ljwr"]
-[ext_resource type="Script" path="res://Player/Scripts/state_walk.gd" id="5_x0tya"]
-[ext_resource type="Script" path="res://Player/Scripts/state_attack.gd" id="6_ullg3"]
+[ext_resource type="Script" path="res://Player/Scripts/states/state_idle.gd" id="7_7vyeg"]
 [ext_resource type="AudioStream" uid="uid://cx8tba67ogr0x" path="res://Player/Audio/SwordSwoosh.wav" id="8_of8wr"]
-[ext_resource type="Script" path="res://Player/Scripts/PlayerInteractionsHost.gd" id="10_skbss"]
+[ext_resource type="Script" path="res://Player/Scripts/states/state_walk.gd" id="8_wbqai"]
+[ext_resource type="Script" path="res://Player/Scripts/states/state_attack.gd" id="9_o1nwr"]
 [ext_resource type="PackedScene" uid="uid://csrvbii3jjl5n" path="res://GeneralNodes/HurtBox/hurt_box.tscn" id="10_v2j4f"]
-[ext_resource type="Script" path="res://Player/Scripts/state_stun.gd" id="11_4k5by"]
-[ext_resource type="Script" path="res://Player/PlayerCamera.gd" id="11_lgjr6"]
+[ext_resource type="Script" path="res://Player/Scripts/states/state_stun.gd" id="11_tary8"]
+[ext_resource type="Script" path="res://Player/Scripts/PlayerCamera.gd" id="12_4l1oj"]
+[ext_resource type="Script" path="res://Player/Scripts/player_interactions_host.gd" id="13_x4ti2"]
 [ext_resource type="PackedScene" uid="uid://bchup1e8hnq5k" path="res://GeneralNodes/HitBox/hit_box.tscn" id="13_y3u24"]
+[ext_resource type="Script" path="res://Player/Scripts/PushArea.gd" id="14_rn135"]
 [ext_resource type="AudioStream" uid="uid://c7jakf0m3qqap" path="res://Player/Audio/hit_player.wav" id="14_sscct"]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_ntyp5"]
-radius = 11.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_b3kjm"]
+size = Vector2(15, 18)
 
 [sub_resource type="Animation" id="Animation_mydst"]
 resource_name = "Attack_down"
@@ -522,6 +523,9 @@ _data = {
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ro1er"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7dc4e"]
+size = Vector2(16, 15)
+
 [sub_resource type="CircleShape2D" id="CircleShape2D_djdo3"]
 
 [sub_resource type="Animation" id="Animation_kunh1"]
@@ -592,15 +596,15 @@ _data = {
 }
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(136, 295)
 collision_mask = 16
 motion_mode = 1
 wall_min_slide_angle = 0.174533
 script = ExtResource("1_ttowv")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -2)
-shape = SubResource("CircleShape2D_ntyp5")
+position = Vector2(-9.16322e-06, 2.5)
+rotation = 1.5708
+shape = SubResource("RectangleShape2D_b3kjm")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -648,21 +652,21 @@ libraries = {
 script = ExtResource("3_ubuep")
 
 [node name="Idle" type="Node" parent="StateMachine"]
-script = ExtResource("4_0ljwr")
+script = ExtResource("7_7vyeg")
 
 [node name="Walk" type="Node" parent="StateMachine"]
-script = ExtResource("5_x0tya")
+script = ExtResource("8_wbqai")
 
 [node name="Attack" type="Node" parent="StateMachine"]
-script = ExtResource("6_ullg3")
+script = ExtResource("9_o1nwr")
 attack_sound = ExtResource("8_of8wr")
 
 [node name="Stun" type="Node" parent="StateMachine"]
-script = ExtResource("11_4k5by")
+script = ExtResource("11_tary8")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 editor_draw_limits = true
-script = ExtResource("11_lgjr6")
+script = ExtResource("12_4l1oj")
 
 [node name="Audio" type="Node2D" parent="."]
 
@@ -670,7 +674,7 @@ script = ExtResource("11_lgjr6")
 max_polyphony = 4
 
 [node name="Interactions" type="Node2D" parent="."]
-script = ExtResource("10_skbss")
+script = ExtResource("13_x4ti2")
 
 [node name="Area2D" type="Area2D" parent="Interactions"]
 position = Vector2(0, 6)
@@ -681,6 +685,18 @@ monitoring = false
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/Area2D"]
 shape = SubResource("RectangleShape2D_ro1er")
 debug_color = Color(0.227451, 0.87451, 0.360784, 0.419608)
+
+[node name="PushArea" type="Area2D" parent="Interactions"]
+position = Vector2(0, 6)
+collision_layer = 0
+collision_mask = 16
+monitorable = false
+script = ExtResource("14_rn135")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Interactions/PushArea"]
+position = Vector2(0, -2.5)
+shape = SubResource("RectangleShape2D_7dc4e")
+debug_color = Color(0.884232, 0.30989, 0.896345, 0.419608)
 
 [node name="HitBox" parent="." instance=ExtResource("13_y3u24")]
 collision_layer = 2

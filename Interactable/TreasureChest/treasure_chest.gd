@@ -6,11 +6,11 @@ class_name TreasureChest extends Node2D
 
 var is_open : bool = false
 
-@onready var item_sprite = $ItemSprite
-@onready var label = $ItemSprite/Label
-@onready var animation_player = $AnimationPlayer
-@onready var interact_area = $Area2D # name changed
-@onready var persistent_data_is_open = $"PersistentData-IsOpen" # Name changed for this TreasureChest script
+@onready var item_sprite : Sprite2D = $ItemSprite
+@onready var label : Label = $ItemSprite/Label
+@onready var animation_player : AnimationPlayer = $AnimationPlayer
+@onready var interact_area : Area2D = $InteractArea2D
+@onready var persistent_data_is_open : PersistentDataHandler = $"PersistentData-IsOpen"
 
 
 func _ready() -> void:

@@ -10,14 +10,14 @@ var off_rect : Rect2 # Track where out sprite sheet needs to be
 
 @onready var area_2d : Area2D = $Area2D
 @onready var audio : AudioStreamPlayer2D = $AudioStreamPlayer2D # it's a player, not an acutal stream.
-# Typed @onready and dragged the audio file from folder to preload().Can use @export to (so no preload)
+# Typed @onready and dragged audio file from folder to preload().Can use @export too (see LockedDoor)
 @onready var audio_activate : AudioStream = preload("res://Interactable/Dungen/lever-01.wav") 
 @onready var audio_deactivate : AudioStream = preload("res://Interactable/Dungen/lever-02.wav")
 @onready var sprite : Sprite2D = $Sprite2D
 
 
 func _ready() -> void:
-	area_2d.body_entered.connect( _on_body_entered )
+	area_2d.body_entered.connect( _on_body_entered ) # Monitor a body (player & statue's), not area
 	area_2d.body_exited.connect( _on_body_exited )
 	# Sprite Inspector-Region->Rect. Region of atlas texture to display. (deactivated plate texture atm)
 	off_rect = sprite.region_rect 
@@ -32,7 +32,7 @@ func _on_body_entered( _b : Node2D) -> void:
 	pass
 
 
-func _on_body_exited( b : Node2D) -> void:
+func _on_body_exited( _b : Node2D) -> void:
 	bodies -= 1
 	check_is_activated()
 	pass

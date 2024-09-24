@@ -52,7 +52,6 @@ func slot_changed() -> void:
 
 #---------------------------------------------------------------------------------------------------------
 # For saving:
-
 ## Gather the inventory into an array (called & to be saved in dict in SaveManager)
 func get_save_data() -> Array:
 	var item_save : Array = []
@@ -91,3 +90,14 @@ func item_from_save( save_object : Dictionary ) -> SlotData:
 	new_slot.item_data = load( save_object.item_path ) # path to the item last saved (in item_to_save func)
 	new_slot.quantity = int(save_object.quantity) # quantity is a string in dict
 	return new_slot
+
+#----------------------------------------------------------------
+
+# For using eg. dungen key (in locked_door script)
+func use_item( item : ItemData, count : int = 1 ) -> bool:
+	for s in slots:
+		if s: # Check if this slot is not null (empty), i.e. there's an item in it
+			if s.item_data == item and s.quantity >= count:
+				s.quantity -= count
+				return true
+	return false

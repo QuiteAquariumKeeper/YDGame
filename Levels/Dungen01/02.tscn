@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://clyouyo03asxt"]
+[gd_scene load_steps=6 format=3 uid="uid://clyouyo03asxt"]
 
 [ext_resource type="Script" path="res://Levels/scripts/level.gd" id="1_ul7mv"]
 [ext_resource type="PackedScene" uid="uid://bxrbn108nsp2g" path="res://Tile Maps/Dungen_01_TileMap.tscn" id="1_vno8b"]
 [ext_resource type="PackedScene" uid="uid://cqm72ivekbyoo" path="res://Levels/level_transition.tscn" id="2_ucolq"]
 [ext_resource type="PackedScene" uid="uid://drqbppd44ocf" path="res://Levels/player_spawn.tscn" id="3_yw8nw"]
+[ext_resource type="PackedScene" uid="uid://jkmarcqkaunt" path="res://Interactable/Dungen/locked_door.tscn" id="4_ge7m7"]
 
 [node name="02" type="Node2D"]
 script = ExtResource("1_ul7mv")
@@ -14,6 +15,9 @@ layer_0/tile_data = PackedInt32Array(-262144, 589824, 0, -196608, 589824, 1, -13
 
 [node name="PlayerSpawn" parent="." instance=ExtResource("3_yw8nw")]
 position = Vector2(504, 408)
+
+[node name="LockedDoor" parent="." instance=ExtResource("4_ge7m7")]
+position = Vector2(352, -42)
 
 [node name="LevelTransition" parent="." instance=ExtResource("2_ucolq")]
 position = Vector2(416, 472)
@@ -28,3 +32,9 @@ level = "res://Levels/Dungen01/03.tscn"
 center_player = false
 size = 3
 side = 1
+
+[node name="LevelTransition3" parent="." instance=ExtResource("2_ucolq")]
+position = Vector2(384, -48)
+level = "res://Levels/Dungen01/04.tscn"
+center_player = false
+side = 2

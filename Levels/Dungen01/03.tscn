@@ -1,9 +1,13 @@
-[gd_scene load_steps=5 format=3 uid="uid://b0d5kf2cfpv8e"]
+[gd_scene load_steps=9 format=3 uid="uid://b0d5kf2cfpv8e"]
 
 [ext_resource type="Script" path="res://Levels/scripts/level.gd" id="1_fcwua"]
 [ext_resource type="PackedScene" uid="uid://bxrbn108nsp2g" path="res://Tile Maps/Dungen_01_TileMap.tscn" id="2_npn5j"]
 [ext_resource type="PackedScene" uid="uid://drqbppd44ocf" path="res://Levels/player_spawn.tscn" id="3_11ots"]
 [ext_resource type="PackedScene" uid="uid://cqm72ivekbyoo" path="res://Levels/level_transition.tscn" id="4_tfww5"]
+[ext_resource type="PackedScene" uid="uid://ctdtanr5rgw7d" path="res://GeneralNodes/EnemyCounter/enemy_counter.tscn" id="5_8xrre"]
+[ext_resource type="PackedScene" uid="uid://dsdfokbmkw0bq" path="res://Enemies/Slime/Slime.tscn" id="6_v3pug"]
+[ext_resource type="PackedScene" uid="uid://boh3yqsn2taxj" path="res://GeneralNodes/ItemDropper/item_dropper.tscn" id="7_wteni"]
+[ext_resource type="Resource" uid="uid://dnv8eplgyxfnj" path="res://Items/key_dungen.tres" id="8_nsk5y"]
 
 [node name="03" type="Node2D"]
 script = ExtResource("1_fcwua")
@@ -21,3 +25,17 @@ level = "res://Levels/Dungen01/02.tscn"
 target_tansition_area = "LevelTransition2"
 center_player = false
 size = 3
+
+[node name="EnemyCounter" parent="." instance=ExtResource("5_8xrre")]
+
+[node name="Slime" parent="EnemyCounter" instance=ExtResource("6_v3pug")]
+position = Vector2(240, 120)
+
+[node name="Slime2" parent="EnemyCounter" instance=ExtResource("6_v3pug")]
+position = Vector2(304, 200)
+
+[node name="ItemDropper" parent="." instance=ExtResource("7_wteni")]
+position = Vector2(120, 144)
+item_data = ExtResource("8_nsk5y")
+
+[connection signal="enemies_defeated" from="EnemyCounter" to="ItemDropper" method="drop_item"]

@@ -3,6 +3,8 @@
 @tool
 class_name ItemPickup extends CharacterBody2D
 
+signal has_picked_up # For item_dropper script (dungen key only records persistence when picked up)
+
 @export var item_data : ItemData : set = _set_item_data
 
 var picked_up : bool = false # for data persistence
@@ -21,8 +23,8 @@ func _ready() -> void:
 	area_2d.body_entered.connect( _on_body_entered )
 	
 	# For data persistence:
-	persistent_data_pickedup.data_loaded.connect( set_item_state )
-	set_item_state()
+	#persistent_data_pickedup.data_loaded.connect( set_item_state )
+	#set_item_state()
 	
 	#persistent_data_dropped.set_drop_value( global_position, item_data ) ######################################## Folkor's method.  13 th
 
@@ -54,7 +56,7 @@ func _on_body_entered( b ) -> void:
 			if PlayerManager.INVENTORY_DATA.add_item( item_data ): # add_item() is a bool, so if true (ie. added)
 				_item_picked_up() # only pick up when item can be added to inventory
 				
-				persistent_data_pickedup.set_data() # add data persistence once picked up
+				#persistent_data_pickedup.set_data() # add data persistence once picked up # Mine. dungen key sometiems don't instantiate
 	pass
 
 
@@ -62,6 +64,7 @@ func _item_picked_up() -> void:
 	area_2d.body_entered.disconnect( _on_body_entered ) # disconnect once picked up, avoid repeated pick up
 	audio_stream_player_2d.play()
 	visible = false # wait till audio finish playing before queue free
+	has_picked_up.emit() # Emits to item_dropper script for data persistence
 	await audio_stream_player_2d.finished
 	#persistent_data_dropped.clear_drop_valuue() ######################################## Folkor's method.  13 th
 	queue_free()

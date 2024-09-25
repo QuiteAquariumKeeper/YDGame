@@ -31,11 +31,10 @@ func _get_name() -> String:
 	return get_tree().current_scene.scene_file_path + "/" + get_parent().name + "/" + name
 
 
-############################################### Folkor's method for adding data persistence to drops remained on ground:   13 th
-#func clear_drop_valuue() -> void:
-	#SaveManager.remove_persistent_value( _get_name() )
-	#pass
-#func set_drop_value( global_position, item_data) -> void:
-	#coords = global_position
-	#SaveManager.add_persistent_value( str( [_get_name(), coords, item_data] ) )
-	#pass
+## Folkor's method for location persistence------------------------------------------------------------
+# Called in pushable_statue script (when statue stops)
+func set_coords( global_pos : Vector2 ) -> void: 
+	SaveManager.add_persistent_location( _get_name(), global_pos )
+	print( SaveManager.current_save )
+	pass
+##----------------------------------------------------------------------------------------------------

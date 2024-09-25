@@ -184,6 +184,7 @@ _data = {
 }
 
 [node name="BarredDoor" type="Node2D"]
+process_mode = 3
 script = ExtResource("1_irxcg")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

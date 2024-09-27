@@ -79,4 +79,4 @@ libraries = {
 "": SubResource("AnimationLibrary_17und")
 }
 
-[node name="PersistentData-PickedUp" parent="." instance=ExtResource("5_bms2w")]
+[node name="PersistentData-Dropped" parent="." instance=ExtResource("5_bms2w")]

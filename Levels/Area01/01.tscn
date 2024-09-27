@@ -24,21 +24,18 @@ position = Vector2(735, 129)
 [node name="LevelTransition" parent="." instance=ExtResource("4_ihg1b")]
 position = Vector2(448, 704)
 level = "res://Levels/Area01/02.tscn"
-center_player = false
 size = 4
 side = 3
 
 [node name="LevelTransition2" parent="." instance=ExtResource("4_ihg1b")]
 position = Vector2(1056, 368)
 level = "res://Levels/Area01/03.tscn"
-center_player = false
 size = 3
 side = 1
 
 [node name="LevelTransition3" parent="." instance=ExtResource("4_ihg1b")]
 position = Vector2(848, 48)
 level = "res://Levels/Dungen01/01.tscn"
-center_player = false
 side = 2
 
 [node name="TreasureChest" parent="." instance=ExtResource("10_iw4my")]
@@ -59,18 +56,22 @@ quantity = 1
 [node name="ItemPickup" parent="." instance=ExtResource("5_kkbnn")]
 position = Vector2(684, 239)
 item_data = ExtResource("6_hi7qp")
+pre_exist = "YES"
 
 [node name="ItemPickup2" parent="." instance=ExtResource("5_kkbnn")]
 position = Vector2(926, 252)
 item_data = ExtResource("7_gi1sd")
+pre_exist = "YES"
 
 [node name="ItemPickup3" parent="." instance=ExtResource("5_kkbnn")]
 position = Vector2(849, 301)
 item_data = ExtResource("8_36dds")
+pre_exist = "YES"
 
 [node name="ItemPickup4" parent="." instance=ExtResource("5_kkbnn")]
 position = Vector2(929, 328)
 item_data = ExtResource("9_2633e")
+pre_exist = "YES"
 
 [node name="Goblin" parent="." instance=ExtResource("11_nlk8w")]
 position = Vector2(677, 139)

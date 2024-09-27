@@ -1,19 +1,22 @@
 # Generic ItemPickup that can be used to match other item Resources that can be picked up (eg. drops)
-# ItemPickup scene changed type to charactorbody2D to give a speed as drops and collision to walls.
+# ItemPickup scene changed type to charactorbody2D to give a speed when drop and collide to walls.
 @tool
 class_name ItemPickup extends CharacterBody2D
 
 signal has_picked_up # For item_dropper script (dungen key only records persistence when picked up)
 
 @export var item_data : ItemData : set = _set_item_data
+@export var pre_exist : String = "NO" ## Mine 27th
 
 var picked_up : bool = false # for data persistence
+var name_path : String ## Mine 26th
 
 @onready var area_2d : Area2D = $Area2D
 @onready var sprite_2d : Sprite2D = $Sprite2D
 @onready var audio_stream_player_2d : AudioStreamPlayer2D = $AudioStreamPlayer2D
 #@onready var animation_player = $AnimationPlayer # Don't work for some reason (E19 comments abt bounce)
-@onready var persistent_data_pickedup : PersistentDataHandler = $"PersistentData-PickedUp"
+#@onready var persistent_data_pickedup : PersistentDataHandler = $"PersistentData-Pickedup"
+#@onready var persistent_data_dropped : PersistentDataHandler = $"PersistentData-Dropped"
 
 
 func _ready() -> void:
@@ -22,20 +25,22 @@ func _ready() -> void:
 		return
 	area_2d.body_entered.connect( _on_body_entered )
 	
-	# For data persistence:
+	## Mine 26th - res://levels/area01/01.tscn / treasurechest / PersistentDataHandler
+	name_path = get_tree().current_scene.scene_file_path + "/" + get_parent().name + "/" + name
+	
+	# For data persistence: # My code, greyed out after E24 as don't work with Michael's
 	#persistent_data_pickedup.data_loaded.connect( set_item_state )
 	#set_item_state()
 	
-	#persistent_data_dropped.set_drop_value( global_position, item_data ) ######################################## Folkor's method.  13 th
+	#persistent_data_dropped.set_drop_value( global_position, item_data ) ## Folkor's drop persistent
 
-
-# For data persistent
-func set_item_state() -> void:
-	picked_up = persistent_data_pickedup.value
-	if picked_up: # picked_up is bool. ie. if it's true:
-		queue_free()
-	else:
-		return
+# Data persistent for picking up items already on the ground - greyed after E24 (my code)
+#func set_item_state() -> void:
+	#picked_up = persistent_data_pickedup.value
+	#if picked_up: # picked_up is bool. ie. if it's true:
+		#queue_free()
+	#else:
+		#return
 
 
 # For drop items to bounce off walls if near walls
@@ -66,7 +71,7 @@ func _item_picked_up() -> void:
 	visible = false # wait till audio finish playing before queue free
 	has_picked_up.emit() # Emits to item_dropper script for data persistence
 	await audio_stream_player_2d.finished
-	#persistent_data_dropped.clear_drop_valuue() ######################################## Folkor's method.  13 th
+	#persistent_data_dropped.clear_drop_value() ## Folkor's method for drop persistence
 	queue_free()
 	pass
 
@@ -89,3 +94,6 @@ func _update_texture() -> void:
 func bounce() -> void:
 	$AnimationPlayer.play("bounce") # only local ref not @onready ref, as it doesn't work (see E19 comments)
 	pass
+
+
+

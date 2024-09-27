@@ -22,7 +22,6 @@ position = Vector2(264, 128)
 position = Vector2(256, 304)
 level = "res://Levels/Area01/01.tscn"
 target_tansition_area = "LevelTransition3"
-center_player = false
 side = 3
 
 [node name="LevelTransition2" parent="." instance=ExtResource("4_ubemx")]

@@ -19,7 +19,6 @@ var invulnerable : bool = false
 @onready var state_machine : EnemyStateMachine = $EnemyStateMachine
 
 
-
 func _ready():
 	state_machine.initialize( self )
 	player = PlayerManager.player # from globalPlayerManager. Assumed player initialised before enemies

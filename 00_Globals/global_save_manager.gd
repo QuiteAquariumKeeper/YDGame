@@ -15,10 +15,11 @@ var current_save : Dictionary = {
 		pos_x = 0,
 		pos_y = 0
 	},
-	items = [],
+	items = [], # Inventory items
 	persistence = [],
-	locations = [],
-	quests = []
+	locations = [], # folkor's location persistence
+	quests = [],
+	drops = [] # folkor's drops persistence
 }
 
 
@@ -54,9 +55,7 @@ func load_game() -> void:
 	PlayerManager.INVENTORY_DATA.parse_save_data( current_save.items )
 	
 	await LevelManager.level_loaded
-	
 	game_loaded.emit()
-	
 	pass
 
 
@@ -104,14 +103,14 @@ func add_persistent_location( value : String, coords : Vector2 ) -> void:
 func check_persistent_location( value : String ) -> bool:
 	for i in current_save.locations:
 		if i["name"] == value:
-			print( "match")
+			#print( "match")
 			return true
 	return false
 
 func get_persistent_location( value : String ) -> Vector2:
 	for i in current_save.locations:
 		if i["name"] == value:
-			print( i["pos_x"], i["pos_y"] )
+			#print( i["pos_x"], i["pos_y"] )
 			return Vector2( i["pos_x"], i["pos_y"] )
 	return Vector2.ZERO
 
@@ -120,3 +119,39 @@ func remove_persistent_location( value : String ) -> void:
 		if i["name"] == value:
 			current_save.locations.erase( i )
 ## ------------------------------------------------------------------------------------------------
+
+## Folkor's method for drops persistence----------------------------------------------------------
+func add_persistent_drop( value: String, pre_exist : String, scene: String, coords: Vector2, item: ItemData) -> void:
+	if check_persistent_drop( value ) == false:
+		current_save.drops.append( {
+			"name" = value, 
+			"pre_exist" = pre_exist,
+			"scene" = scene,
+			"pos_x" = coords.x,
+			"pos_y" = coords.y,
+			"item_data" = item
+			} )
+	else:
+		remove_persistent_drop( value )
+		current_save.drops.append( {
+			"name" = value, 
+			"pre_exist" = pre_exist,
+			"scene" = scene,
+			"pos_x" = coords.x,
+			"pos_y" = coords.y,
+			"item_data" = item
+			} )
+	pass
+
+func check_persistent_drop( value : String ) -> bool:
+	for i in current_save.drops:
+		if i["name"] == value:
+			print("Match")
+			return true
+	return false
+
+func remove_persistent_drop( value : String ) -> void:
+	for i in current_save.drops:
+		if i["scene"] == value: ## Mine 26th
+			current_save.drops.erase( i )
+##------------------------------------------------------------------------------------------------

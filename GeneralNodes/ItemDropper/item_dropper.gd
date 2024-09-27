@@ -32,7 +32,8 @@ func drop_item() -> void: # Called when enemies_defeated signal fires by Node
 	
 	var drop = PICKUP.instantiate() as ItemPickup
 	drop.item_data = item_data
-	add_child( drop )
+	get_parent().call_deferred( "add_child", drop ) ## Changed from add_child 26th
+	drop.global_position = global_position ## Mine 26th
 	drop.has_picked_up.connect( _on_drop_picked_up )
 	audio.play()
 

@@ -27,7 +27,7 @@ func ChangeTilemapBounds( bounds : Array[ Vector2] ) -> void: # getting called i
 	TileMapBoundsChanged.emit( bounds )
 
 
-## for loading levels for level transitions. Getting called in level_transition:
+# for loading levels for level transitions. Getting called in level_transition:
 func load_new_level(
 		level_path : String,
 		_target_transition : String,

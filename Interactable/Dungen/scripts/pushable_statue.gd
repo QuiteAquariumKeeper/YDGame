@@ -18,10 +18,10 @@ func _ready() -> void:
 func _set_statue_location() -> void:
 	var new_pos : Vector2
 	if SaveManager.check_persistent_location( persistent_location_has_moved._get_name() ):
-		print("exist")
+		#print("exist")
 		new_pos = SaveManager.get_persistent_location( persistent_location_has_moved._get_name() )
 		global_position = new_pos
-	print( str( new_pos ) )
+	#print( str( new_pos ) )
 	pass
 ## ---------------------------------------------------------------------------------------------------
 

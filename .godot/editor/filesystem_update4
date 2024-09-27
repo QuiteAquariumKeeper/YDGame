@@ -1,0 +1,8 @@
+res://Levels/Area01/01.tscn
+res://Items/gem.tres
+res://Items/potion.tres
+res://Items/stone.tres
+res://Items/apple.tres
+res://00_Globals/global_save_manager.gd
+res://Levels/scripts/level.gd
+res://00_Globals/global_level_manager.gd

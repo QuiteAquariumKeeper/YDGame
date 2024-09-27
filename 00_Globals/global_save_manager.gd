@@ -19,15 +19,33 @@ var current_save : Dictionary = {
 	persistence = [],
 	locations = [], # folkor's location persistence
 	quests = [],
-	drops = [] # folkor's drops persistence
+	saved_drops = [] # folkor's drops persistence
 }
+######################## Folkor Edit Start ###############################
+func update_drop_data() -> void:
+	var drops = get_drop_save_data()
+	current_save.saved_drops = drops
 
+func get_drop_save_data () -> Array:
+# Gather the drops into an array
+	var drop_save : Array = []
+	for i in LevelManager.drops.size():
+		drop_save.append( item_to_save( LevelManager.drops[i]["item_data"],LevelManager.drops[i]["pos_x"],LevelManager.drops[i]["pos_y"],LevelManager.drops[i]["scene"]) )
+	return drop_save
 
+func item_to_save ( drop : ItemData, pos_x, pos_y, _scene ) -> Dictionary:
+# Convert the items into a dictionary
+	var result = { item = '', posx = pos_x, posy = pos_y, scene = _scene }
+	if drop != null:
+		result.item = drop.resource_path
+	return result
+######################## Folkor Edit End ###############################
 # getting called in pause_menu when press "save"
 func save_game() -> void:
 	update_player_data() # update player's data everytime before saving
 	update_scene_path()
 	update_item_data()
+	update_drop_data() # Convert Drops into Strings for Storing. - Folkor
 	var file := FileAccess.open( SAVE_PATH + "save.sav",FileAccess.WRITE ) #if no existing to open, 
 	# will create one. Stringify will convert to string. Current_save is being saved which contains 
 	# data persistence, so don't need to additionally call data persistence to save
@@ -44,7 +62,6 @@ func load_game() -> void:
 	json.parse( file.get_line() ) # getting the first line (Json has only 1 line) to json
 	var save_dict : Dictionary = json.get_data() as Dictionary
 	current_save = save_dict # update the current_save as per what in the file
-	
 	LevelManager.load_new_level( current_save.scene_path, "", Vector2.ZERO )
 	
 	await LevelManager.level_load_started # when screen is already black
@@ -52,6 +69,7 @@ func load_game() -> void:
 	# everything to update the player happen here. use func in PlayerManager to Set player properties:
 	PlayerManager.set_player_position( Vector2(current_save.player.pos_x, current_save.player.pos_y) )
 	PlayerManager.set_health( current_save.player.hp, current_save.player.max_hp)
+	print ("SAVED DROPS: "+str(current_save.saved_drops)+"\n")
 	PlayerManager.INVENTORY_DATA.parse_save_data( current_save.items )
 	
 	await LevelManager.level_loaded
@@ -118,40 +136,4 @@ func remove_persistent_location( value : String ) -> void:
 	for i in current_save.locations:
 		if i["name"] == value:
 			current_save.locations.erase( i )
-## ------------------------------------------------------------------------------------------------
 
-## Folkor's method for drops persistence----------------------------------------------------------
-func add_persistent_drop( value: String, pre_exist : String, scene: String, coords: Vector2, item: ItemData) -> void:
-	if check_persistent_drop( value ) == false:
-		current_save.drops.append( {
-			"name" = value, 
-			"pre_exist" = pre_exist,
-			"scene" = scene,
-			"pos_x" = coords.x,
-			"pos_y" = coords.y,
-			"item_data" = item
-			} )
-	else:
-		remove_persistent_drop( value )
-		current_save.drops.append( {
-			"name" = value, 
-			"pre_exist" = pre_exist,
-			"scene" = scene,
-			"pos_x" = coords.x,
-			"pos_y" = coords.y,
-			"item_data" = item
-			} )
-	pass
-
-func check_persistent_drop( value : String ) -> bool:
-	for i in current_save.drops:
-		if i["name"] == value:
-			print("Match")
-			return true
-	return false
-
-func remove_persistent_drop( value : String ) -> void:
-	for i in current_save.drops:
-		if i["scene"] == value: ## Mine 26th
-			current_save.drops.erase( i )
-##------------------------------------------------------------------------------------------------

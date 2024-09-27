@@ -13,9 +13,10 @@ func _ready():
 	LevelManager.level_load_started.connect( _free_level )
 	
 	scene = get_tree().current_scene.scene_file_path ## Folkor's drops persistence
+	#SaveManager.game_saved.connect( check_for_saved_drops )
 	
 	tree_exited.connect( store_drops ) ## Mine 26th
-	check_for_previous_drops() ## Folkor's drops persistence
+	LevelManager.level_loaded.connect ( check_for_previous_drops ) ## Folkor's drops persistence
 
 
 # for removing the current level during level transition
@@ -27,13 +28,38 @@ func _free_level() -> void:
 
 ## Folkor's drops persistence ------------------------------------------------------------------------
 func check_for_previous_drops() -> void:
-	var drops = SaveManager.current_save.drops
+	print ("Checking for EXISTING drops")
+	var drops = LevelManager.drops
 	for i in range( drops.size(), 0, -1): # i is 10 to 1 if size = 10
 		var d = drops[ i-1 ] # if i is 10, d = drops[9]
 		if d["scene"] == scene:
 			add_drop( d["item_data"], d["pos_x"], d["pos_y"] )
-			SaveManager.current_save.drops.erase( d )
+			LevelManager.drops.erase( d )
+	check_for_saved_drops()
 	pass
+######################## Folkor Edit Start ###############################
+func check_for_saved_drops() -> void:
+	print ("Checking for SAVED drops")
+	var saved_drops = SaveManager.current_save.saved_drops
+	for i in range(saved_drops.size(), 0, -1):
+		var d = SaveManager.current_save.saved_drops[i-1]
+		if d["scene"] == scene:
+			print ("Found SAVED item for this scene.")
+			d["item_data"]=parse_save_data(d["item"])
+			add_drop(d["item_data"],d["posx"],d["posy"])
+			#SaveManager.current_save.saved_drops.erase(d)
+	pass
+
+func parse_save_data ( res_name : String ) -> ItemData:
+	print (res_name)
+	var item = item_from_save( res_name )
+	print (item)
+	return item
+
+func item_from_save ( save_object : String ) -> ItemData:
+	var item = load( save_object )
+	return item
+######################## Folkor Edit End ###############################
 
 func add_drop( item : ItemData, pos_x: float, pos_y : float ) -> void:
 	var drop : ItemPickup = PICKUP.instantiate() as ItemPickup
@@ -46,5 +72,5 @@ func add_drop( item : ItemData, pos_x: float, pos_y : float ) -> void:
 func store_drops() -> void:
 	for c in get_children():
 		if c is ItemPickup and c.pre_exist == "NO":
-			SaveManager.add_persistent_drop( c.name_path, c.pre_exist, scene, c.global_position, c.item_data )
-	print( SaveManager.current_save )
+			LevelManager.add_persistent_drop( c.name_path, c.pre_exist, scene, c.global_position, c.item_data )
+	print("Transition Save State: " + str(SaveManager.current_save ))

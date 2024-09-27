@@ -13,6 +13,7 @@ var position_offset : Vector2 # offset player's pos
 # for updating camera to not go beyound tile bounds
 var current_tilemap_bounds : Array[ Vector2 ] # 2 vectors of the top left and bottom right coor
 
+var drops = [] # Drop Tracking - Folkor
 
 # for loading the first level so level_transition script _ready() can run
 func _ready() -> void:
@@ -56,3 +57,42 @@ func load_new_level(
 	level_loaded.emit()
 	
 	pass
+
+
+## ------------------------------------------------------------------------------------------------
+
+## Folkor's method for drops persistence----------------------------------------------------------
+func add_persistent_drop( value: String, pre_exist : String, scene: String, coords: Vector2, item: ItemData) -> void:
+	if check_persistent_drop( value ) == false:
+		drops.append( {
+			"name" = value, 
+			"pre_exist" = pre_exist,
+			"scene" = scene,
+			"pos_x" = coords.x,
+			"pos_y" = coords.y,
+			"item_data" = item
+			} )
+	else:
+		remove_persistent_drop( value )
+		drops.append( {
+			"name" = value, 
+			"pre_exist" = pre_exist,
+			"scene" = scene,
+			"pos_x" = coords.x,
+			"pos_y" = coords.y,
+			"item_data" = item
+			} )
+	pass
+
+func check_persistent_drop( value : String ) -> bool:
+	for i in drops:
+		if i["name"] == value:
+			print("Match")
+			return true
+	return false
+
+func remove_persistent_drop( value : String ) -> void:
+	for i in drops:
+		if i["scene"] == value: ## Mine 26th
+			drops.erase( i )
+##------------------------------------------------------------------------------------------------

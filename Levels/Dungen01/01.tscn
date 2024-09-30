@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://da0luwrsipwuv"]
+[gd_scene load_steps=9 format=3 uid="uid://da0luwrsipwuv"]
 
 [ext_resource type="Script" path="res://Levels/scripts/level.gd" id="1_51usq"]
 [ext_resource type="PackedScene" uid="uid://bxrbn108nsp2g" path="res://Tile Maps/Dungen_01_TileMap.tscn" id="1_onyjd"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://0gh0iebn801b" path="res://Interactable/Dungen/pressure_plate.tscn" id="5_8xp22"]
 [ext_resource type="PackedScene" uid="uid://v8mb337sirui" path="res://Interactable/Dungen/barred_door.tscn" id="6_khd2w"]
 [ext_resource type="PackedScene" uid="uid://bqauib7jxjlby" path="res://Interactable/Dungen/pushable_statue.tscn" id="7_42si0"]
+[ext_resource type="PackedScene" uid="uid://b2q0lxdy1savf" path="res://Enemies/goblin/goblin.tscn" id="8_1h8pk"]
 
 [node name="01" type="Node2D"]
 script = ExtResource("1_51usq")
@@ -39,6 +40,9 @@ position = Vector2(224, 56)
 
 [node name="PushableStatue" parent="." instance=ExtResource("7_42si0")]
 position = Vector2(216, 176)
+
+[node name="Goblin" parent="." instance=ExtResource("8_1h8pk")]
+position = Vector2(248, 216)
 
 [connection signal="activated" from="PressurePlate" to="BarredDoor" method="open_door"]
 [connection signal="deactivated" from="PressurePlate" to="BarredDoor" method="close_door"]

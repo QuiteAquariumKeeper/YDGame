@@ -41,11 +41,11 @@ func set_coords( global_pos : Vector2 ) -> void:
 ##----------------------------------------------------------------------------------------------------
 
 ## Folkor's method for drop persistence-------------------------------------------------------------
-func clear_drop_value() -> void:
-	SaveManager.remove_persistent_drop( _get_name() )
-	pass
+#func clear_drop_value() -> void:
+	#SaveManager.remove_persistent_drop( _get_name() )
+	#pass
 
-func set_drop_value( global_pos : Vector2, item_data : ItemData ) -> void:
-	SaveManager.add_persistent_drop( _get_name(), get_parent().pre_exist, scene, global_pos, item_data )
+#func set_drop_value( global_pos : Vector2, item_data : ItemData ) -> void:
+	#SaveManager.add_persistent_drop( _get_name(), get_parent().pre_exist, scene, global_pos, item_data )
 	#print( SaveManager.current_save )
-	pass
+	#pass

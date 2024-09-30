@@ -5,6 +5,7 @@ const SAVE_PATH = "user://"
 
 signal game_loaded
 signal game_saved
+#signal start_saving ## Mine 27th
 
 
 var current_save : Dictionary = {
@@ -19,15 +20,18 @@ var current_save : Dictionary = {
 	persistence = [],
 	locations = [], # folkor's location persistence
 	quests = [],
-	drops = [] # folkor's drops persistence
+	saved_drops = [] # folkor's drops persistence
 }
 
 
 # getting called in pause_menu when press "save"
 func save_game() -> void:
+	#start_saving.emit() ## Mine 27th
 	update_player_data() # update player's data everytime before saving
 	update_scene_path()
 	update_item_data()
+	update_drop_data() ## Folkor's 28th
+	print(LevelManager.drops)
 	var file := FileAccess.open( SAVE_PATH + "save.sav",FileAccess.WRITE ) #if no existing to open, 
 	# will create one. Stringify will convert to string. Current_save is being saved which contains 
 	# data persistence, so don't need to additionally call data persistence to save
@@ -47,11 +51,13 @@ func load_game() -> void:
 	
 	LevelManager.load_new_level( current_save.scene_path, "", Vector2.ZERO )
 	
+	
 	await LevelManager.level_load_started # when screen is already black
 	
 	# everything to update the player happen here. use func in PlayerManager to Set player properties:
 	PlayerManager.set_player_position( Vector2(current_save.player.pos_x, current_save.player.pos_y) )
 	PlayerManager.set_health( current_save.player.hp, current_save.player.max_hp)
+	print ("SAVED DROPS: "+str(current_save.saved_drops)+"\n") ## Folkor's 28th
 	PlayerManager.INVENTORY_DATA.parse_save_data( current_save.items )
 	
 	await LevelManager.level_loaded
@@ -120,38 +126,26 @@ func remove_persistent_location( value : String ) -> void:
 			current_save.locations.erase( i )
 ## ------------------------------------------------------------------------------------------------
 
-## Folkor's method for drops persistence----------------------------------------------------------
-func add_persistent_drop( value: String, pre_exist : String, scene: String, coords: Vector2, item: ItemData) -> void:
-	if check_persistent_drop( value ) == false:
-		current_save.drops.append( {
-			"name" = value, 
-			"pre_exist" = pre_exist,
-			"scene" = scene,
-			"pos_x" = coords.x,
-			"pos_y" = coords.y,
-			"item_data" = item
-			} )
-	else:
-		remove_persistent_drop( value )
-		current_save.drops.append( {
-			"name" = value, 
-			"pre_exist" = pre_exist,
-			"scene" = scene,
-			"pos_x" = coords.x,
-			"pos_y" = coords.y,
-			"item_data" = item
-			} )
-	pass
+## Folker's 28th ----------------------------------------------------------------------------------
+func update_drop_data() -> void: # Called in save_game()
+	var drops = get_drop_save_data()
+	current_save.saved_drops = drops
 
-func check_persistent_drop( value : String ) -> bool:
-	for i in current_save.drops:
-		if i["name"] == value:
-			print("Match")
-			return true
-	return false
+# Gather the drops into an array
+func get_drop_save_data () -> Array:
+	var drop_save : Array = []
+	for i in LevelManager.drops.size():
+		drop_save.append( item_to_save( 
+			LevelManager.drops[i]["item_data"],
+			LevelManager.drops[i]["pos_x"],
+			LevelManager.drops[i]["pos_y"],
+			LevelManager.drops[i]["scene"]
+			) )
+	return drop_save
 
-func remove_persistent_drop( value : String ) -> void:
-	for i in current_save.drops:
-		if i["scene"] == value: ## Mine 26th
-			current_save.drops.erase( i )
-##------------------------------------------------------------------------------------------------
+# Convert the items into a dictionary
+func item_to_save ( drop : ItemData, pos_x, pos_y, _scene ) -> Dictionary:
+	var result = { item = '', posx = pos_x, posy = pos_y, scene = _scene } # what will show in saved_drops[]
+	if drop != null:
+		result.item = drop.resource_path
+	return result

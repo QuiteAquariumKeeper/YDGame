@@ -90,11 +90,11 @@ func drop_items() -> void:
 			var drop : ItemPickup = PICKUP.instantiate() as ItemPickup
 			drop.item_data = drops[ i ].item # item_data in item_pickup script gets set to match drops' item.
 			
-			# The drop won't appear without a parent. Give it the parent of enemy (03).
+			# The drop won't appear without a parent. Give it the parent of the level.
 			# Destroy state only gets set when area2D (hitbox) send an signal - can't add an area2D to the
 			# scene in the same call that's triggered by an area2D, so can't add child as usual. Use
-			# call_deferred pass in the method in string and argument, and wait till safe to call it.
-			enemy.get_parent().call_deferred( "add_child", drop)
+			# call_deferred and wait till safe to call it.
+			get_tree().current_scene.call_deferred( "add_child", drop) ## Mine 27th (was enemy.get_parent()) Bug - drops layer in front of slimes
 			drop.global_position = enemy.global_position
 			# rotated 1.5 = 86 deg. Velocity times range (0.9 a little slower than enemy, 1.5)
 			drop.velocity = enemy.velocity.rotated( randi_range(-2, 2) ) * randf_range(0.9, 1.5)
